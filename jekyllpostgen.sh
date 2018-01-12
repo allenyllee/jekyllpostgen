@@ -27,6 +27,9 @@
 # categories: EN
 # ---
 
+# source directory of this script
+SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 function config {
     # Post layout
     layout="post"
@@ -128,6 +131,8 @@ date=$(date +"$default_date_format_in_post")
     echo "---"
     echo "layout: ${layout}"
     echo "title: \"${title}\""
+    echo "uuid:" "$($SOURCE_DIR/uuid/uuid.sh)"
+    echo "comments: true"
 } >> "$filename"
 
 if [[ "$is_basic_mode" = false ]]; then

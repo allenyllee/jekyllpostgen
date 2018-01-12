@@ -1,3 +1,6 @@
 [submodule "test/libs/shunit2"]
 	path = test/libs/shunit2
 	url = https://github.com/kward/shunit2
+[submodule "uuid"]
+	path = uuid
+	url = https://gist.github.com/bc7975f787ef83604e3ca262fa5e6fc0.git
