@@ -1,5 +1,16 @@
 #! /bin/bash
 
+################################
+# Source:
+#   allenyllee/jekyllpostgen: A Jekyll Post Generator for BASH
+#       https://github.com/allenyllee/jekyllpostgen
+#
+# Usage:
+#       ./jekyllpostgen.sh "title Abc" -c "category" -t "tag,foo,bar" -mn
+#   -m: enable mathjax
+#   -n: enable comments
+################################
+
 #--------jekyllpostgen--------#
 #
 # Source and tweaked from:
@@ -110,11 +121,14 @@ if [[ "$is_interactive" = true ]]; then
     do_interactive_mode
 elif [[ "$is_interactive" = false && "$is_basic_mode" = false ]]; then
     OPTIND=2
-    while getopts "l:t:c:" option; do
+    # getopts option without colon(:) if no parameter needed
+    while getopts "l:t:c:mn" option; do
         case "${option}" in
             t) tags=${OPTARG};;
             l) href=${OPTARG};;
             c) categories=${OPTARG};;
+            m) mathjax="true";;
+            n) comments="true";;
         esac
     done
     title="$1"
@@ -132,7 +146,6 @@ date=$(date +"$default_date_format_in_post")
     echo "layout: ${layout}"
     echo "title: \"${title}\""
     echo "uuid:" "$($SOURCE_DIR/uuid/uuid.sh)"
-    echo "comments: true"
 } >> "$filename"
 
 if [[ "$is_basic_mode" = false ]]; then
@@ -162,6 +175,20 @@ if [[ "$is_basic_mode" = false ]]; then
     echo "categories: $categories" >> "$filename"
   else
     echo "categories: ${default_category}" >> "$filename"
+  fi
+
+  ### Adding mathjax
+  if [ "$mathjax" == "true" ]; then
+    echo "mathjax: true" >> "$filename"
+  else
+    echo "mathjax: false" >> "$filename"
+  fi
+
+  ### Adding comments
+  if [ "$comments" == "true" ]; then
+    echo "comments: true" >> "$filename"
+  else
+    echo "comments: false" >> "$filename"
   fi
 
 fi
